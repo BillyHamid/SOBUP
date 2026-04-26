@@ -1,0 +1,32 @@
+{
+  "name": "@sobup/api",
+  "version": "0.1.0",
+  "description": "SOBUP Platform - NestJS API",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "npx nest start --watch",
+    "build": "npx nest build",
+    "start": "node dist/main.js",
+    "start:prod": "node dist/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@nestjs/common": "^11.1.18",
+    "@nestjs/config": "^4.0.4",
+    "@nestjs/core": "^11.1.18",
+    "@nestjs/platform-express": "^11.1.18",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^20.19.39",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.9.3"
+  }
+}
