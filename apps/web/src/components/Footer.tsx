@@ -82,8 +82,7 @@ export default function Footer() {
             </div>
           </div>
           <p className="text-xs text-gray-500">
-            &copy; {new Date().getFullYear()} SOBUP. Tous droits réservés. Siège
-            : CHU Yalgado Ouédraogo, Ouagadougou, Burkina Faso
+            &copy; {new Date().getFullYear()} SOBUP. Tous droits réservés.
           </p>
         </div>
       </div>

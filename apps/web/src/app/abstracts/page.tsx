@@ -1,13 +1,19 @@
 import PageHero from "@/components/PageHero";
 
 export default function AbstractsPage() {
+  const annee = new Date().getFullYear();
+  const anneeImpaire = annee % 2 !== 0;
+  const evenement = anneeImpaire
+    ? { label: "9ème Congrès SOBUP", icon: "🏛️", color: "#E91E63", bg: "#fce4ec" }
+    : { label: "Journée Scientifique Régionale", icon: "🏥", color: "#31B9AE", bg: "#E8F9F7" };
+
   return (
     <>
       <PageHero
         title="Soumission d'abstracts"
-        subtitle="Déposez vos travaux scientifiques — communications orales, posters, cas cliniques — pour le 9ème Congrès SOBUP."
+        subtitle="Déposez vos travaux scientifiques — communications orales, posters, cas cliniques — pour la Journée Scientifique Régionale."
         breadcrumb={[{ label: "Accueil", href: "/" }, { label: "Abstracts" }]}
-        tag="Congrès 2026 — Deadline : 30 Avril 2026"
+        tag={`Journée Scientifique ${annee} — Soumissions du 31 Juillet au 30 Septembre`}
         shape="sharp"
       />
 
@@ -17,8 +23,8 @@ export default function AbstractsPage() {
           <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 flex items-center gap-4 mb-8">
             <span className="text-3xl">⏰</span>
             <div>
-              <p className="font-black text-amber-900">Deadline de soumission : 30 Avril 2026</p>
-              <p className="text-sm text-amber-700">Les abstracts acceptés seront notifiés avant le 10 Mai 2026. Les auteurs devront s'inscrire au congrès pour présenter leur travail.</p>
+              <p className="font-black text-amber-900">Période de soumission : du 31 Juillet au 30 Septembre {annee}</p>
+              <p className="text-sm text-amber-700">Les abstracts acceptés seront notifiés après la clôture des soumissions. Les auteurs devront s'inscrire à la journée scientifique pour présenter leur travail.</p>
             </div>
           </div>
 
@@ -32,7 +38,6 @@ export default function AbstractsPage() {
                   {[
                     { value: "oral", label: "Communication orale", icon: "🎤" },
                     { value: "poster", label: "Poster", icon: "📊" },
-                    { value: "cas", label: "Cas clinique", icon: "🩺" },
                   ].map((t) => (
                     <label key={t.value} className="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-primary transition-colors text-center">
                       <input type="radio" name="type" value={t.value} className="sr-only"/>
@@ -59,23 +64,6 @@ export default function AbstractsPage() {
                 <input type="text" placeholder="Dupont A., Martin B., ..." className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 transition-all"/>
               </div>
 
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1.5">Groupe de Travail associé</label>
-                <select className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none text-gray-600">
-                  <option value="">Sélectionner un GTT (optionnel)</option>
-                  <option>GT Tuberculose</option>
-                  <option>GT Asthme & Allergie</option>
-                  <option>GT Oncologie thoracique</option>
-                  <option>GT Tabac & BPCO</option>
-                  <option>GT Pneumo-pédiatrie</option>
-                  <option>GT Sommeil & VNI</option>
-                  <option>GT EFR</option>
-                  <option>GT Imagerie thoracique</option>
-                  <option>GT Endoscopie bronchique</option>
-                  <option>GT Infections non TB</option>
-                  <option>GT Environnement & Travail</option>
-                </select>
-              </div>
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">Titre de l&apos;abstract *</label>
@@ -86,8 +74,16 @@ export default function AbstractsPage() {
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">
                   Texte de l&apos;abstract * <span className="font-normal text-gray-400">(max. 300 mots)</span>
                 </label>
-                <p className="text-xs text-gray-400 mb-2">Structure recommandée : Introduction — Méthodes — Résultats — Conclusion</p>
+                <p className="text-xs text-gray-400 mb-2">Structure recommandée : Introduction — Méthodes — Résultats — Conclusion — Mots clés</p>
                 <textarea rows={8} className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 transition-all resize-none"/>
+              </div>
+
+              <div className="rounded-xl border-2 p-4 flex items-center gap-3" style={{ borderColor: evenement.color, background: evenement.bg }}>
+                <span className="text-2xl shrink-0">{evenement.icon}</span>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{ color: evenement.color }}>Événement cible — {annee}</p>
+                  <p className="text-sm font-black text-gray-900">{evenement.label}</p>
+                </div>
               </div>
 
               <div>

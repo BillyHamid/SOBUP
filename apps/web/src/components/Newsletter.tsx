@@ -32,12 +32,8 @@ export default function Newsletter() {
             {/* Left */}
             <div className="lg:w-1/2 text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start gap-2 mb-6">
-                <div className="flex -space-x-3">
-                  {["/logo.png", "/logo.png", "/logo.png"].map((src, i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border border-zinc-900 overflow-hidden bg-zinc-800">
-                      <Image src={src} width={32} height={32} alt="SOBUP" className="object-cover w-full h-full" />
-                    </div>
-                  ))}
+                <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-lg border-2 border-zinc-700">
+                  <Image src="/logo.png" width={72} height={72} alt="SOBUP" className="object-contain w-16 h-16" />
                 </div>
                 <span className="ml-3 flex items-center gap-1.5 py-1 px-3 bg-white/5 rounded-full border border-white/10">
                   <Star className="w-2.5 h-2.5 fill-zinc-100 text-zinc-100" />

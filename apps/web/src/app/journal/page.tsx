@@ -1,106 +1,230 @@
-import PageHero from "@/components/PageHero";
+import Link from "next/link";
+import Image from "next/image";
 
-const articles = [
-  { type: "Article original", title: "Prévalence de la silicose chez les mineurs artisanaux au Burkina Faso", authors: "Ouédraogo K., Sawadogo B., Compaoré Y.", institution: "CHU Yalgado Ouédraogo", year: "2026", vol: "Vol. 3, N°1", gtt: "GT Environnement & Travail" },
-  { type: "Éditorial", title: "Vers une pneumologie africaine : défis et perspectives pour 2026", authors: "Pr. Zoungrana O.", institution: "SOBUP", year: "2026", vol: "Vol. 3, N°1", gtt: null },
-  { type: "Cas clinique", title: "Aspergillome pulmonaire sur séquelle de tuberculose — à propos d'un cas", authors: "Compaoré Y., Traoré S.", institution: "CHU Yalgado Ouédraogo", year: "2026", vol: "Vol. 3, N°1", gtt: "GT Tuberculose" },
-  { type: "Article original", title: "Facteurs associés à la non-observance du traitement antituberculeux au Burkina Faso", authors: "Sawadogo B., Kaboré A., Ouédraogo M.", institution: "Programme National Tuberculose", year: "2025", vol: "Vol. 2, N°2", gtt: "GT Tuberculose" },
-  { type: "Revue", title: "Place de la spirométrie dans le diagnostic de la BPCO en Afrique subsaharienne", authors: "Kaboré A., Traoré S.", institution: "CHU Bogodogo", year: "2025", vol: "Vol. 2, N°2", gtt: "GT EFR" },
-  { type: "Article original", title: "Profil clinique du cancer du poumon au CHU Yalgado Ouédraogo", authors: "Compaoré Y., Sawadogo B.", institution: "CHU Yalgado Ouédraogo", year: "2025", vol: "Vol. 2, N°1", gtt: "GT Oncologie thoracique" },
+const highlights = [
+  { icon: "🏛️", label: "Vie de la société", desc: "L'Assemblée Générale Élective" },
+  { icon: "📜", label: "Histoire & Héritage", desc: "Entretien avec le Pr Martial OUEDRAOGO" },
+  { icon: "🎖️", label: "Hommages", desc: "Pr Bernard KOFFI N'GORAN — Abidjan" },
+  { icon: "🔬", label: "Rayonnement scientifique", desc: "Actualité scientifique en bref" },
 ];
-
-const typeColors: Record<string, { bg: string; color: string }> = {
-  "Article original": { bg: "#E8F9F7", color: "#31B9AE" },
-  "Éditorial": { bg: "#fef3c7", color: "#d97706" },
-  "Cas clinique": { bg: "#fef2f2", color: "#dc2626" },
-  "Revue": { bg: "#eff6ff", color: "#2563eb" },
-};
 
 export default function JournalPage() {
   return (
-    <>
-      <PageHero
-        title="Journal scientifique SOBUP"
-        subtitle="Publication officielle de la SOBUP — articles originaux, éditoriaux, cas cliniques et revues en pneumologie africaine."
-        breadcrumb={[{ label: "Accueil", href: "/" }, { label: "Journal" }]}
-        tag="Revue scientifique"
-        shape="chevron-up"
+    <section
+      className="relative overflow-hidden text-white"
+      style={{
+        minHeight: "calc(100vh - 70px)",
+        background: "linear-gradient(160deg, #0B3D38 0%, #065E52 45%, #0a7265 100%)",
+      }}
+    >
+      {/* Texture points */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[.08]"
+        style={{
+          backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+        }}
+      />
+      {/* Blobs flottants */}
+      <div
+        className="absolute pointer-events-none rounded-full"
+        style={{
+          top: "-100px",
+          right: "-80px",
+          width: "440px",
+          height: "440px",
+          background: "radial-gradient(circle, rgba(49,185,174,.42) 0%, transparent 70%)",
+          filter: "blur(45px)",
+          animation: "j-float 9s ease-in-out infinite",
+        }}
+      />
+      <div
+        className="absolute pointer-events-none rounded-full"
+        style={{
+          bottom: "-80px",
+          left: "-60px",
+          width: "340px",
+          height: "340px",
+          background: "radial-gradient(circle, rgba(230,126,34,.28) 0%, transparent 70%)",
+          filter: "blur(55px)",
+          animation: "j-float 11s ease-in-out infinite reverse",
+        }}
+      />
+      {/* Anneau tournant */}
+      <div
+        className="absolute pointer-events-none hidden md:block"
+        style={{
+          top: "10%",
+          right: "6%",
+          width: "260px",
+          height: "260px",
+          borderRadius: "50%",
+          border: "1px dashed rgba(255,255,255,.15)",
+          animation: "j-spin 34s linear infinite",
+        }}
       />
 
-      <section className="py-12" style={{ background: "#f0fafa" }}>
-        <div className="mx-auto max-w-7xl px-4 grid lg:grid-cols-4 gap-8">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-12 md:py-20">
+        {/* Retour accueil */}
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/70 hover:text-white transition-colors mb-10"
+          style={{ animation: "j-fade .6s ease both" }}
+        >
+          ← Retour à l&apos;accueil
+        </Link>
 
-          {/* Articles */}
-          <div className="lg:col-span-3 space-y-4">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-black text-gray-900">Derniers articles publiés</h2>
-              <span className="text-xs text-gray-400 font-medium">Volume 3, N°1 — 2026</span>
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* COUVERTURE — vitrine magazine */}
+          <div
+            className="relative flex justify-center lg:justify-start"
+            style={{ animation: "j-fadeup .8s ease both" }}
+          >
+            {/* Halo coloré derrière */}
+            <div
+              className="absolute inset-x-10 top-10 bottom-10 rounded-3xl opacity-60 blur-3xl"
+              style={{ background: "linear-gradient(135deg, #31B9AE 0%, #e67e22 100%)" }}
+            />
+            {/* Cercles décoratifs */}
+            <div
+              className="absolute -top-4 -right-4 w-24 h-24 rounded-full opacity-40 pointer-events-none"
+              style={{
+                background: "radial-gradient(circle, #e67e22 0%, transparent 70%)",
+                filter: "blur(8px)",
+              }}
+            />
+            {/* Couverture inclinée */}
+            <div
+              className="relative rounded-2xl overflow-hidden bg-white max-w-md w-full transition-transform duration-500 hover:rotate-0"
+              style={{
+                transform: "rotate(-2.5deg)",
+                boxShadow: "0 30px 80px rgba(0,0,0,.55), 0 8px 20px rgba(0,0,0,.25)",
+              }}
+            >
+              <Image
+                src="/newletter.jpg"
+                alt="Newsletter SOBUP N°1 — Avril 2026"
+                width={1200}
+                height={1700}
+                className="w-full h-auto block"
+                sizes="(max-width: 1024px) 90vw, 480px"
+                priority
+              />
+              {/* Ruban NOUVEAU */}
+              <div
+                className="absolute top-5 -right-1 px-4 py-1.5 text-[11px] font-black text-white tracking-widest shadow-lg"
+                style={{
+                  background: "#e67e22",
+                  clipPath: "polygon(0 0, 100% 0, 100% 100%, 8px 100%, 0 75%)",
+                }}
+              >
+                NOUVEAU
+              </div>
             </div>
-            {articles.map((article, i) => {
-              const cs = typeColors[article.type] ?? { bg: "#f1f5f9", color: "#64748b" };
-              return (
-                <div key={i} className="bg-background rounded-2xl p-5 border border-gray-100 hover:shadow-lg transition-all group cursor-pointer card-shadow">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-12 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: cs.bg }}>
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: cs.color }}>
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <span className="text-xs font-bold px-2.5 py-0.5 rounded-full" style={{ background: cs.bg, color: cs.color }}>{article.type}</span>
-                        <span className="text-xs text-gray-400">{article.vol} · {article.year}</span>
-                        {article.gtt && <span className="text-xs font-semibold" style={{ color: "#31B9AE" }}>📌 {article.gtt}</span>}
-                      </div>
-                      <h3 className="font-black text-gray-900 text-sm leading-snug mb-1.5 group-hover:text-primary transition-colors">
-                        {article.title}
-                      </h3>
-                      <p className="text-xs text-gray-400">{article.authors} — <span className="italic">{article.institution}</span></p>
-                    </div>
-                    <button className="shrink-0 p-2 rounded-lg hover:bg-primary-light transition-colors" style={{ color: "#31B9AE" }}>
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
           </div>
 
-          {/* Sidebar */}
-          <div className="space-y-5">
-            <div className="bg-background rounded-2xl p-5 border border-gray-100 card-shadow">
-              <h3 className="font-black text-gray-900 mb-3">📖 À propos du journal</h3>
-              <p className="text-xs text-gray-500 leading-relaxed mb-4">
-                Le Journal SOBUP est la publication officielle de la Société Burkinabè de Pneumologie. Publié 2 fois par an, il accueille des travaux originaux en pneumologie africaine.
-              </p>
-              <div className="space-y-2 text-xs text-gray-600">
-                <p>📅 <strong>Périodicité :</strong> Semestrielle</p>
-                <p>🌐 <strong>Langue :</strong> Français</p>
-                <p>📧 <strong>Soumissions :</strong> journal@sobup.bf</p>
-              </div>
+          {/* INFOS + SOMMAIRE + DOWNLOAD */}
+          <div style={{ animation: "j-fadeup .8s ease both", animationDelay: ".15s" }}>
+            {/* Tag pulsant */}
+            <span
+              className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[.22em] px-4 py-2 rounded-full mb-6"
+              style={{
+                background: "rgba(49,185,174,.22)",
+                border: "1px solid rgba(49,185,174,.4)",
+                color: "#7EEAE4",
+              }}
+            >
+              <span
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ background: "#7EEAE4", animation: "j-pulse 2s ease-in-out infinite" }}
+              />
+              Bulletin d&apos;information · Numéro 1
+            </span>
+
+            {/* Titre deux-tons */}
+            <h1 className="font-black leading-tight mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3.4rem)" }}>
+              <span className="block">Newsletter SOBUP</span>
+              <span className="block" style={{ color: "#7EEAE4" }}>Avril 2026</span>
+            </h1>
+
+            {/* Barre accent */}
+            <div
+              className="mb-6 rounded-full"
+              style={{ width: "60px", height: "4px", background: "#e67e22" }}
+            />
+
+            {/* Description */}
+            <p className="text-base md:text-lg leading-relaxed mb-8 max-w-lg" style={{ color: "rgba(255,255,255,.78)" }}>
+              Découvrez le premier numéro du bulletin d&apos;information de la Société Burkinabè
+              de Pneumologie&nbsp;: actualité de la société, histoire, hommages et rayonnement
+              scientifique.
+            </p>
+
+            {/* Sommaire express */}
+            <div className="grid sm:grid-cols-2 gap-3 mb-9">
+              {highlights.map((h) => (
+                <div
+                  key={h.label}
+                  className="flex items-start gap-3 px-4 py-3 rounded-xl"
+                  style={{ background: "rgba(255,255,255,.08)", border: "1px solid rgba(255,255,255,.12)" }}
+                >
+                  <span className="text-xl shrink-0" aria-hidden>{h.icon}</span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold text-white leading-tight">{h.label}</p>
+                    <p className="text-xs mt-0.5 leading-snug" style={{ color: "rgba(255,255,255,.6)" }}>{h.desc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
 
-            <div className="bg-background rounded-2xl p-5 border border-gray-100 card-shadow">
-              <h3 className="font-black text-gray-900 mb-3">📚 Archives</h3>
-              <div className="space-y-2">
-                {[
-                  { label: "Vol. 3, N°1 — 2026", articles: 6 },
-                  { label: "Vol. 2, N°2 — 2025", articles: 8 },
-                  { label: "Vol. 2, N°1 — 2025", articles: 7 },
-                  { label: "Vol. 1, N°2 — 2024", articles: 5 },
-                ].map((a) => (
-                  <div key={a.label} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
-                    <span className="text-xs font-medium text-gray-700">{a.label}</span>
-                    <span className="text-xs text-gray-400">{a.articles} articles</span>
-                  </div>
-                ))}
-              </div>
+            {/* CTAs */}
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href="/newsletter-n1-avril-2026.pdf"
+                download
+                className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl font-black text-white text-base transition-all hover:-translate-y-1"
+                style={{ background: "#e67e22", boxShadow: "0 16px 40px rgba(230,126,34,.5)" }}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"
+                  />
+                </svg>
+                Télécharger le PDF
+                <span className="text-xs font-normal opacity-80">· 7 Mo</span>
+              </a>
+              <a
+                href="/newsletter-n1-avril-2026.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-4 rounded-xl font-bold text-sm transition-all hover:bg-white/20"
+                style={{
+                  color: "#fff",
+                  background: "rgba(255,255,255,.1)",
+                  border: "1px solid rgba(255,255,255,.25)",
+                }}
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                Lire en ligne
+              </a>
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+
+      <style>{`
+        @keyframes j-fadeup { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes j-fade { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes j-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-24px); } }
+        @keyframes j-spin { to { transform: rotate(360deg); } }
+        @keyframes j-pulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+      `}</style>
+    </section>
   );
 }

@@ -5,50 +5,52 @@ import Newsletter from "@/components/Newsletter";
 
 /* ─── Mock data ─── */
 
-const gttGroups = [
-  { name: "Tuberculose", icon: "🫁", slug: "tuberculose", color: "bg-red-50 border-red-200 text-red-700" },
-  { name: "Asthme & Allergie", icon: "💨", slug: "asthme-allergie", color: "bg-blue-50 border-blue-200 text-blue-700" },
-  { name: "Oncologie thoracique", icon: "🔬", slug: "oncologie-thoracique", color: "bg-purple-50 border-purple-200 text-purple-700" },
-  { name: "Tabac & BPCO", icon: "🚭", slug: "tabac-bpco", color: "bg-gray-50 border-gray-200 text-gray-700" },
-  { name: "Pneumo-pédiatrie", icon: "👶", slug: "pneumo-pediatrie", color: "bg-pink-50 border-pink-200 text-pink-700" },
-  { name: "Sommeil & VNI", icon: "😴", slug: "sommeil-vni", color: "bg-indigo-50 border-indigo-200 text-indigo-700" },
-  { name: "Imagerie thoracique", icon: "📷", slug: "imagerie-thoracique", color: "bg-cyan-50 border-cyan-200 text-cyan-700" },
-  { name: "Endoscopie bronchique", icon: "🩺", slug: "endoscopie-bronchique", color: "bg-primary-light border-primary/25 text-primary-dark" },
-  { name: "EFR", icon: "📊", slug: "efr", color: "bg-amber-50 border-amber-200 text-amber-700" },
-  { name: "Infections non TB", icon: "🦠", slug: "infections-non-tb", color: "bg-orange-50 border-orange-200 text-orange-700" },
-  { name: "Environnement & Travail", icon: "🏭", slug: "environnement-travail", color: "bg-primary-light border-primary/25 text-primary-dark" },
-];
-
 const upcomingEvents = [
   {
-    date: "15",
-    month: "Mai",
+    date: "31",
+    month: "Juil",
     year: "2026",
-    title: "9ème Congrès annuel de la SOBUP",
+    title: "Prise en charge des pathologies respiratoires professionnelles indemnisables (déclaration et réparation)",
+    location: "Ouagadougou, Burkina Faso",
+    type: "EPU",
+    badge: "bg-green-600 text-white",
+    href: "/gtt/environnement-travail",
+    image: "/ev-environnement-travail.jpg",
+    gtt: "GT Environnement & Travail",
+  },
+  {
+    date: "8",
+    month: "Août",
+    year: "2026",
+    title: "2ème session de l'École de l'Asthme et des Allergies",
+    location: "CHUP Charles de Gaulle, Ouagadougou",
+    type: "Formation",
+    badge: "bg-blue-600 text-white",
+    href: "/gtt/asthme-allergie",
+    image: "/ev-asthme-v3.jpg",
+    gtt: "GT Asthme & Allergies · GT Pneumo-Pédiatrie",
+  },
+  {
+    date: "19",
+    month: "Nov",
+    year: "2026",
+    title: "1ère Journée Scientifique Régionale",
+    location: "Koudougou, Burkina Faso",
+    type: "Journée",
+    badge: "bg-secondary text-white",
+    href: "/evenements/journee-regionale",
+    image: "/baniercongres/ban1.jpeg",
+  },
+  {
+    date: "16",
+    month: "Déc",
+    year: "2027",
+    title: "9ème Congrès de la SOBUP",
     location: "Ouagadougou, Burkina Faso",
     type: "Congrès",
     badge: "bg-accent text-white",
     href: "/evenements/9eme-congres",
-  },
-  {
-    date: "22",
-    month: "Juin",
-    year: "2026",
-    title: "Webinaire : Prise en charge de l'asthme sévère",
-    location: "En ligne",
-    type: "Webinaire",
-    badge: "bg-secondary text-white",
-    href: "/evenements/webinaire-asthme",
-  },
-  {
-    date: "10",
-    month: "Juil",
-    year: "2026",
-    title: "Atelier pratique de spirométrie",
-    location: "CHU Yalgado Ouédraogo",
-    type: "Atelier",
-    badge: "bg-primary text-white",
-    href: "/evenements/atelier-spirometrie",
+    image: "/baniercongres/congres-4-v3.JPG",
   },
 ];
 
@@ -89,22 +91,9 @@ const latestNews = [
 
 const journalArticles = [
   {
-    type: "Article original",
-    title: "Prévalence de la silicose chez les mineurs artisanaux au Burkina Faso",
-    authors: "Ouédraogo K., Sawadogo B., et al.",
-    year: "2026",
-  },
-  {
-    type: "Éditorial",
-    title: "Vers une pneumologie africaine : défis et perspectives",
-    authors: "Pr. Zoungrana O.",
-    year: "2026",
-  },
-  {
-    type: "Cas clinique",
-    title: "Aspergillome pulmonaire sur séquelle de tuberculose — à propos d'un cas",
-    authors: "Compaoré Y., Traoré S.",
-    year: "2026",
+    tag: "GT Environnement et Travail",
+    title: "Prise en charge des pathologies respiratoires professionnelles indemnisables (déclaration et réparation)",
+    date: "31 juillet",
   },
 ];
 
@@ -120,29 +109,6 @@ export default function Home() {
       <HeroCarousel />
 
       {/* ══════════════════════════════════════
-          QUICK ACCESS
-      ══════════════════════════════════════ */}
-      <section className="bg-background py-10">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { icon: "📋", title: "Recommandations", sub: "Guides & protocoles nationaux", href: "/recommandations", bg: "from-blue-50 to-blue-100", border: "border-blue-200", text: "text-blue-700" },
-              { icon: "👥", title: "Annuaire", sub: "Trouver un pneumologue", href: "/annuaire", bg: "from-primary-light to-secondary-light", border: "border-primary/25", text: "text-primary-dark" },
-              { icon: "🎓", title: "Formations", sub: "E-learning & webinaires", href: "/formations", bg: "from-purple-50 to-purple-100", border: "border-purple-200", text: "text-purple-700" },
-              { icon: "📰", title: "Journal SOBUP", sub: "Publications scientifiques", href: "/journal", bg: "from-orange-50 to-orange-100", border: "border-orange-200", text: "text-orange-700" },
-            ].map((item) => (
-              <Link key={item.title} href={item.href}
-                className={`group bg-gradient-to-br ${item.bg} border ${item.border} rounded-2xl p-5 hover:shadow-md transition-all hover:-translate-y-0.5`}>
-                <span className="text-3xl block mb-3">{item.icon}</span>
-                <p className={`font-bold text-sm ${item.text} mb-1`}>{item.title}</p>
-                <p className="text-xs text-gray-500">{item.sub}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════
           MOT DU PRÉSIDENT (comme PATS)
       ══════════════════════════════════════ */}
       <section className="bg-gray-50 py-16">
@@ -153,10 +119,11 @@ export default function Home() {
               <div className="relative">
                 <div className="relative w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full overflow-hidden shadow-xl ring-4 ring-white">
                   <Image
-                    src="/president-sobup.png"
+                    src="/baniercongres/presi.jpeg"
                     alt="Portrait du Président de la SOBUP"
                     fill
-                    className="object-cover object-[center_15%]"
+                    className="object-cover"
+                    style={{ objectPosition: "60% 12%", transformOrigin: "60% 22%", transform: "scale(1.15)" }}
                     sizes="(max-width: 640px) 288px, (max-width: 768px) 320px, 384px"
                     priority
                   />
@@ -180,7 +147,7 @@ export default function Home() {
                 la prise en charge des maladies respiratoires au Burkina Faso. Ce site est votre
                 espace — celui de toute notre communauté scientifique.&rdquo;
               </blockquote>
-              <p className="font-bold text-gray-900">Pr. [Nom du Président]</p>
+              <p className="font-bold text-gray-900">Docteur Abdoul Risgou OUEDRAOGO (MCA)</p>
               <p className="text-sm text-gray-500">Président de la SOBUP</p>
               <Link href="/a-propos" className="inline-flex items-center gap-1.5 mt-4 text-primary hover:text-primary-dark font-semibold text-sm transition-colors">
                 En savoir plus sur la SOBUP
@@ -188,88 +155,6 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════
-          GTT — GROUPES DE TRAVAIL
-      ══════════════════════════════════════ */}
-      <section className="bg-background py-16">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="text-center mb-10">
-            <p className="text-secondary text-sm font-semibold uppercase tracking-wider mb-2">Expertise scientifique</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-              Groupes de Travail Thématiques
-            </h2>
-            <p className="text-gray-500 max-w-2xl mx-auto text-sm">
-              Les GTT sont le cœur scientifique de la SOBUP. Ils produisent recommandations, formations
-              et ressources scientifiques pour chaque spécialité.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {gttGroups.map((gtt) => (
-              <Link key={gtt.slug} href={`/gtt/${gtt.slug}`}
-                className={`group border-2 ${gtt.color} rounded-xl p-4 hover:shadow-md transition-all hover:-translate-y-0.5 bg-background`}>
-                <span className="text-2xl block mb-2">{gtt.icon}</span>
-                <p className="font-semibold text-gray-900 group-hover:text-primary text-sm leading-tight">
-                  {gtt.name}
-                </p>
-              </Link>
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link href="/gtt"
-              className="inline-flex items-center gap-2 bg-primary-light hover:bg-blue-100 text-primary px-6 py-3 rounded-lg font-semibold text-sm transition-colors">
-              Voir tous les groupes de travail
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════
-          JOURNAL SOBUP
-      ══════════════════════════════════════ */}
-      <section className="py-16 bg-primary-light/40">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="grid md:grid-cols-5 gap-8 items-start">
-            {/* Left — promo */}
-            <div className="md:col-span-2 bg-primary rounded-2xl p-8 text-white">
-              <span className="text-4xl block mb-4">📖</span>
-              <h2 className="text-2xl font-bold mb-3">Journal Scientifique SOBUP</h2>
-              <p className="text-blue-100 text-sm leading-relaxed mb-6">
-                Publication officielle de la SOBUP — articles originaux, éditoriaux,
-                cas cliniques et revues de la littérature en pneumologie africaine.
-              </p>
-              <Link href="/journal"
-                className="inline-block bg-background text-primary hover:bg-gray-50 px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors">
-                Consulter le journal
-              </Link>
-            </div>
-            {/* Right — articles */}
-            <div className="md:col-span-3 space-y-4">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-bold text-gray-900 text-lg">Derniers articles</h3>
-                <Link href="/journal" className="text-primary text-sm font-medium hover:underline">
-                  Tout voir →
-                </Link>
-              </div>
-              {journalArticles.map((article, i) => (
-                <div key={i}
-                  className="bg-background rounded-xl p-5 border border-gray-100 hover:border-primary/30 hover:shadow-md transition-all group cursor-pointer card-shadow">
-                  <span className="text-xs font-semibold bg-secondary-light text-secondary px-2.5 py-1 rounded-full">
-                    {article.type}
-                  </span>
-                  <h4 className="font-semibold text-gray-900 group-hover:text-primary mt-2 mb-1 text-sm leading-snug">
-                    {article.title}
-                  </h4>
-                  <p className="text-xs text-gray-400">{article.authors} — {article.year}</p>
-                </div>
-              ))}
             </div>
           </div>
         </div>
@@ -295,34 +180,126 @@ export default function Home() {
               </svg>
             </Link>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {upcomingEvents.map((ev, i) => (
               <Link key={i} href={ev.href}
-                className="group bg-background rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all hover:-translate-y-0.5 card-shadow">
-                {/* Date banner */}
-                <div className="bg-primary px-6 py-4 flex items-center gap-4">
-                  <div className="text-center">
-                    <p className="text-4xl font-bold text-white leading-none">{ev.date}</p>
-                    <p className="text-blue-200 text-sm font-medium">{ev.month} {ev.year}</p>
+                className="group bg-background rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 card-shadow">
+                {/* Image or color banner */}
+                {ev.image ? (
+                  <div className="relative h-44 overflow-hidden">
+                    <Image
+                      src={ev.image}
+                      alt={ev.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"/>
+                    <span className={`absolute top-3 left-3 ${ev.badge} text-xs font-bold px-3 py-1 rounded-full shadow`}>
+                      {ev.type}
+                    </span>
+                    <div className="absolute bottom-3 left-4 flex items-baseline gap-1.5 text-white">
+                      <span className="text-3xl font-black leading-none">{ev.date}</span>
+                      <span className="text-sm font-medium opacity-90">{ev.month} {ev.year}</span>
+                    </div>
                   </div>
-                  <span className={`${ev.badge} text-xs font-bold px-3 py-1 rounded-full ml-auto`}>
-                    {ev.type}
-                  </span>
-                </div>
+                ) : (
+                  <div className="bg-primary px-6 py-4 flex items-center gap-4">
+                    <div className="text-center">
+                      <p className="text-4xl font-bold text-white leading-none">{ev.date}</p>
+                      <p className="text-blue-200 text-sm font-medium">{ev.month} {ev.year}</p>
+                    </div>
+                    <span className={`${ev.badge} text-xs font-bold px-3 py-1 rounded-full ml-auto`}>
+                      {ev.type}
+                    </span>
+                  </div>
+                )}
                 <div className="p-5">
-                  <h3 className="font-bold text-gray-900 group-hover:text-primary transition-colors text-sm leading-snug mb-3">
+                  <h3 className="font-bold text-gray-900 group-hover:text-primary transition-colors text-base leading-snug mb-3">
                     {ev.title}
                   </h3>
-                  <p className="flex items-center gap-1.5 text-xs text-gray-400">
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <p className="flex items-center gap-1.5 text-xs text-gray-400 mb-2">
+                    <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                         d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     </svg>
                     {ev.location}
                   </p>
+                  {"gtt" in ev && ev.gtt && (
+                    <p className="flex items-center gap-1.5 text-xs font-medium" style={{ color: "#31B9AE" }}>
+                      <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      {(ev as { gtt: string }).gtt}
+                    </p>
+                  )}
                 </div>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          JOURNAL SOBUP
+      ══════════════════════════════════════ */}
+      <section className="py-16 bg-primary-light/40">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="grid md:grid-cols-7 gap-8 items-start">
+            {/* Left — couverture du dernier numéro */}
+            <Link
+              href="/journal"
+              className="md:col-span-2 group block relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 bg-white"
+            >
+              <div className="relative">
+                <Image
+                  src="/newletter.jpg"
+                  alt="Couverture Newsletter SOBUP N°1 — Avril 2026"
+                  width={1200}
+                  height={1700}
+                  className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.02]"
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                />
+                {/* Badge numéro */}
+                <span
+                  className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black shadow-md backdrop-blur-sm"
+                  style={{ background: "rgba(255,255,255,.95)", color: "#0a7265" }}
+                >
+                  📖 N°1 · Avril 2026
+                </span>
+                {/* CTA bas avec dégradé */}
+                <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
+                  <span
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black text-white shadow-lg"
+                    style={{ background: "#e67e22" }}
+                  >
+                    Lire le numéro
+                    <span className="transition-transform group-hover:translate-x-1">→</span>
+                  </span>
+                </div>
+              </div>
+            </Link>
+            {/* Right — articles */}
+            <div className="md:col-span-5 space-y-4">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-bold text-gray-900 text-lg">Derniers articles</h3>
+                <Link href="/journal" className="text-primary text-sm font-medium hover:underline">
+                  Tout voir →
+                </Link>
+              </div>
+              {journalArticles.map((article, i) => (
+                <div key={i}
+                  className="bg-background rounded-xl p-5 border border-gray-100 hover:border-primary/30 hover:shadow-md transition-all group cursor-pointer card-shadow">
+                  <span className="text-xs font-semibold bg-secondary-light text-secondary px-2.5 py-1 rounded-full">
+                    {article.tag}
+                  </span>
+                  <h4 className="font-semibold text-gray-900 group-hover:text-primary mt-2 mb-1 text-sm leading-snug">
+                    {article.title}
+                  </h4>
+                  <p className="text-xs text-gray-400">{article.date}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -335,28 +312,133 @@ export default function Home() {
       {/* ══════════════════════════════════════
           CTA ADHÉSION
       ══════════════════════════════════════ */}
-      <section className="py-16 banniere-sobup">
-        <div className="mx-auto max-w-7xl px-4 text-center">
-          <span className="text-4xl block mb-4">🤝</span>
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-            Rejoignez la communauté SOBUP
-          </h2>
-          <p className="text-white/85 max-w-xl mx-auto mb-8">
-            Devenez membre — accédez aux ressources exclusives, rejoignez un GTT,
-            participez aux congrès et payez votre cotisation en ligne.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/adhesion"
-              className="bg-accent hover:bg-orange-700 text-white px-8 py-3 rounded-lg font-bold transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
-              Adhérer maintenant
-            </Link>
-            <Link href="/espace-membre"
-              className="bg-white/15 hover:bg-white/25 text-white border border-white/20 px-8 py-3 rounded-lg font-bold transition-all">
-              Espace membre
-            </Link>
+      <section
+        className="relative py-20 overflow-hidden"
+        style={{ background: "linear-gradient(160deg, #0B3D38 0%, #065E52 50%, #31B9AE 100%)" }}
+      >
+        {/* Dot texture */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        {/* Decorative rings */}
+        <div className="absolute -top-20 -left-20 w-80 h-80 rounded-full border border-white/5 pointer-events-none"/>
+        <div className="absolute -bottom-10 -right-10 w-64 h-64 rounded-full border border-white/5 pointer-events-none"/>
+
+        <div className="relative mx-auto max-w-5xl px-4">
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            {/* Left — text */}
+            <div>
+              <span
+                className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-5"
+                style={{ background: "rgba(49,185,174,0.2)", border: "1px solid rgba(49,185,174,0.4)", color: "#7EEAE4" }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ background: "#7EEAE4" }}/>
+                Adhésion SOBUP
+              </span>
+              <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-4">
+                Rejoignez la<br/>
+                <span style={{ color: "#7EEAE4" }}>communauté SOBUP</span>
+              </h2>
+              <div className="w-12 h-1 rounded-full mb-5" style={{ background: "#e67e22" }}/>
+              <p className="text-white/80 text-base leading-relaxed max-w-md">
+                Devenez membre actif — accédez aux ressources exclusives, rejoignez un Groupe de Travail Thématique et participez à nos congrès.
+              </p>
+            </div>
+            {/* Right — cards + CTAs */}
+            <div className="space-y-4">
+              {[
+                { icon: "📚", label: "Ressources & publications exclusives" },
+                { icon: "🏆", label: "Accès aux congrès et formations" },
+                { icon: "👥", label: "Réseau de 150+ pneumologues" },
+                { icon: "🔬", label: "Participation aux groupes de travail" },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl"
+                  style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.1)" }}
+                >
+                  <span className="text-xl">{item.icon}</span>
+                  <span className="text-white/90 font-medium text-sm">{item.label}</span>
+                </div>
+              ))}
+              <div className="flex gap-3 pt-2">
+                <Link href="/adhesion"
+                  className="flex-1 text-center px-6 py-3 rounded-xl font-black text-white text-sm shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl"
+                  style={{ background: "#e67e22" }}>
+                  Adhérer maintenant
+                </Link>
+                <Link href="/espace-membre"
+                  className="flex-1 text-center px-6 py-3 rounded-xl font-black text-sm border transition-all hover:-translate-y-0.5"
+                  style={{ color: "#7EEAE4", borderColor: "rgba(49,185,174,0.45)", background: "rgba(49,185,174,0.1)" }}>
+                  Espace membre
+                </Link>
+              </div>
+            </div>
           </div>
-          <p className="text-white/65 text-xs mt-6">
-            Paiement par Orange Money, Wave ou carte bancaire
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          NOS PARTENAIRES
+      ══════════════════════════════════════ */}
+      <section className="relative py-20 overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D38 0%, #0a5c52 50%, #0d7a6e 100%)" }}>
+        {/* Texture points */}
+        <div className="absolute inset-0 pointer-events-none opacity-[.06]"
+          style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+        {/* Halos décoratifs */}
+        <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(49,185,174,.25) 0%, transparent 70%)", filter: "blur(40px)" }} />
+        <div className="absolute -bottom-20 -right-20 w-64 h-64 rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(230,126,34,.2) 0%, transparent 70%)", filter: "blur(40px)" }} />
+
+        <div className="relative mx-auto max-w-7xl px-4">
+          {/* En-tête */}
+          <div className="text-center mb-12">
+            <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[.22em] px-4 py-2 rounded-full mb-4"
+              style={{ background: "rgba(49,185,174,.18)", border: "1px solid rgba(49,185,174,.35)", color: "#7EEAE4" }}>
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#7EEAE4" }} />
+              Ils nous font confiance
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black text-white">Nos partenaires</h2>
+            <div className="w-10 h-1 rounded-full mx-auto mt-3" style={{ background: "#e67e22" }} />
+          </div>
+
+          {/* Logos */}
+          <div className="flex flex-wrap items-center justify-center gap-8">
+            {[
+              { src: "/PATS.jpeg", alt: "PATS", name: "PATS" },
+              { src: "/SAPLF.jpg", alt: "SAPLF", name: "SAPLF" },
+            ].map((p) => (
+              <div key={p.alt}
+                className="group relative flex flex-col items-center gap-5 px-16 py-10 rounded-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                style={{ background: "rgba(255,255,255,.07)", border: "1px solid rgba(255,255,255,.12)", backdropFilter: "blur(8px)" }}>
+                {/* Halo hover */}
+                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{ background: "rgba(49,185,174,.08)", border: "1px solid rgba(49,185,174,.3)" }} />
+                {/* Logo */}
+                <div className="relative w-52 h-24 flex items-center justify-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={p.src}
+                    alt={p.alt}
+                    className="max-h-24 max-w-[208px] w-auto object-contain"
+                  />
+                </div>
+                <span className="relative text-xs font-bold tracking-widest uppercase text-white/50">
+                  {p.name}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Ligne bas */}
+          <p className="text-center text-xs text-white/30 mt-12">
+            Vous souhaitez devenir partenaire ?{" "}
+            <Link href="/contact" className="underline hover:text-white/60 transition-colors">Contactez-nous</Link>
           </p>
         </div>
       </section>

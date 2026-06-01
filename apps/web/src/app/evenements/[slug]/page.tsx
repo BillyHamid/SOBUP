@@ -1,134 +1,287 @@
-import PageHero from "@/components/PageHero";
-import Link from "next/link";
+"use client";
 
-export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useParams } from "next/navigation";
+
+/* ─────────────────────────────────────────────────────────────
+   CAROUSEL HÉROS — Concept 2 (Diagonal Split)
+───────────────────────────────────────────────────────────── */
+const heroSlides = [
+  { id: 1, image: "/congresobup/congres-6.jpeg" },
+  { id: 2, image: "/congresobup/WhatsApp Image 2026-05-20 at 10.30.46.jpeg" },
+  { id: 3, image: "/congresobup/WhatsApp Image 2026-05-25 at 13.20.58.jpeg" },
+];
+
+const heroText = {
+  tag: "Save the date · Décembre 2027",
+  title: "Le 9ᵉ Congrès SOBUP approche.",
+  subtitle: "Du 16 au 19 décembre — Azalaï Hôtel, Ouagadougou.",
+};
+
+const congressHistory = [
+  { year: "2011", ordinal: "1ᵉʳ", color: "#2D7DD2", theme: "Poumon et environnement", place: "Salle de conférences Ouaga 2000, Ouagadougou" },
+  { year: "2013", ordinal: "2ᵉ", color: "#F03E3E", theme: "Asthme, Allergologie et Antibiothérapie", place: "Palm Beach Hôtel, Ouagadougou" },
+  { year: "2015", ordinal: "3ᵉ", color: "#F59F00", theme: "Poumon et environnement", place: "Palm Beach Hôtel, Ouagadougou" },
+  { year: "2017", ordinal: "4ᵉ", color: "#E64980", theme: "Pneumologie tropicale et approches thérapeutiques nouvelles", place: "CHU Blaise Compaoré, Ouagadougou" },
+  { year: "2019", ordinal: "5ᵉ", color: "#2B2D33", theme: "Innovation en pratique pneumologique au Burkina Faso", place: "Bravia Hôtel, Ouagadougou" },
+  { year: "2021", ordinal: "6ᵉ", color: "#228BE6", theme: "Pathologies respiratoires et situation de crise", place: "Hôtel Sissiman, Bobo-Dioulasso" },
+  { year: "2023", ordinal: "7ᵉ", color: "#7048E8", theme: "Pathologies respiratoires professionnelles", place: "Bravia Hôtel, Ouagadougou" },
+  { year: "2025", ordinal: "8ᵉ", color: "#37B24D", theme: "Pratique de la pneumologie au Burkina Faso à l'ère des technologies nouvelles", place: "Azalaï Hôtel, Ouagadougou" },
+];
+
+const AUTOPLAY = 6000;
+
+function HeroCarousel() {
+  const [current, setCurrent] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
+
+  const goTo = useCallback((index: number) => {
+    if (transitioning || index === current) return;
+    setTransitioning(true);
+    setTimeout(() => { setCurrent(index); setTransitioning(false); }, 600);
+  }, [transitioning, current]);
+
+  const next = useCallback(() => goTo((current + 1) % heroSlides.length), [current, goTo]);
+  const prev = useCallback(() => goTo((current - 1 + heroSlides.length) % heroSlides.length), [current, goTo]);
+
+  useEffect(() => {
+    const id = setInterval(() => next(), AUTOPLAY);
+    return () => clearInterval(id);
+  }, [next]);
+
+  useEffect(() => {
+    const fn = (e: KeyboardEvent) => { if (e.key === "ArrowRight") next(); if (e.key === "ArrowLeft") prev(); };
+    window.addEventListener("keydown", fn);
+    return () => window.removeEventListener("keydown", fn);
+  }, [next, prev]);
+
+  return (
+    <section className="relative overflow-hidden text-white h-[460px] sm:h-[540px] md:h-[620px] lg:h-[700px]" style={{ background: "#0B3D38" }}>
+      {/* ── Slideshow image en pleine page (crossfade) ── */}
+      <div className="absolute inset-0">
+        {heroSlides.map((s, i) => (
+          <div
+            key={s.id}
+            className="absolute inset-0 transition-opacity duration-700 ease-out"
+            style={{ opacity: i === current ? 1 : 0 }}
+            aria-hidden={i !== current}
+          >
+            <Image
+              src={s.image}
+              alt={heroText.title}
+              fill
+              className="object-contain lg:object-cover"
+              style={{ objectPosition: "50% 25%" }}
+              sizes="100vw"
+              priority={i === 0}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* ── Voile pour lisibilité (sombre à gauche, fade à droite + bas) ── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(105deg, rgba(11,61,56,.65) 0%, rgba(11,61,56,.35) 30%, rgba(11,61,56,.08) 55%, transparent 80%)",
+        }}
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 pointer-events-none"
+        style={{ height: "40%", background: "linear-gradient(to top, rgba(0,0,0,.45) 0%, transparent 100%)" }}
+      />
+      {/* Texture points subtile */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[.05]"
+        style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "28px 28px" }}
+      />
+
+      {/* ── Contenu ── */}
+      <div className="relative z-10 h-full flex items-center">
+        <div className="mx-auto max-w-7xl px-6 lg:px-12 w-full">
+          <div className="max-w-2xl mt-16 lg:mt-24">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="block h-px w-8 rounded-full" style={{ background: "#5BCEC4" }} />
+              <span className="text-[11px] font-black uppercase tracking-[.22em]" style={{ color: "#5BCEC4" }}>{heroText.tag}</span>
+            </div>
+            <h1
+              className="font-black leading-[1.05] mb-6"
+              style={{ fontSize: "clamp(2rem, 4.4vw, 3.6rem)", textShadow: "0 2px 14px rgba(0,0,0,.85), 0 1px 4px rgba(0,0,0,.7)" }}
+            >
+              Le 9ᵉ Congrès SOBUP{" "}
+              <span style={{ color: "#7EEAE4" }}>approche.</span>
+            </h1>
+            <div className="mb-8 rounded-full" style={{ height: "4px", width: "60px", background: "var(--accent)" }} />
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/espace-membre"
+                className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-white text-sm transition-all hover:-translate-y-0.5"
+                style={{ background: "var(--accent)", boxShadow: "0 12px 36px rgba(230,126,34,.5)" }}
+              >
+                S&apos;inscrire au congrès
+                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+              </Link>
+              <Link
+                href="/abstracts"
+                className="inline-flex items-center px-7 py-3.5 rounded-xl font-bold text-sm transition-all hover:bg-white/20"
+                style={{ color: "rgba(255,255,255,.95)", background: "rgba(255,255,255,.12)", border: "1px solid rgba(255,255,255,.28)", backdropFilter: "blur(4px)" }}
+              >
+                Soumettre un abstract
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Navigation slides (bas) ── */}
+      <div className="absolute bottom-8 left-0 right-0 z-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-12 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              {heroSlides.map((s, i) => (
+                <button
+                  key={s.id}
+                  onClick={() => goTo(i)}
+                  aria-label={`Slide ${i + 1}`}
+                  className="h-1.5 rounded-full transition-all duration-300"
+                  style={{
+                    width: i === current ? 36 : 8,
+                    background: i === current ? "var(--accent)" : "rgba(255,255,255,.45)",
+                  }}
+                />
+              ))}
+            </div>
+            <span className="ml-1 font-mono text-xs select-none tabular-nums" style={{ color: "rgba(255,255,255,.65)" }}>
+              {String(current + 1).padStart(2, "0")} <span className="opacity-50">/</span> {String(heroSlides.length).padStart(2, "0")}
+            </span>
+          </div>
+          <div className="flex gap-2">
+            {[prev, next].map((fn, i) => (
+              <button
+                key={i}
+                onClick={fn}
+                aria-label={i === 0 ? "Précédent" : "Suivant"}
+                className="flex items-center justify-center rounded-full transition-all hover:scale-110 hover:bg-white/25"
+                style={{
+                  width: 42,
+                  height: 42,
+                  background: "rgba(255,255,255,.15)",
+                  border: "1px solid rgba(255,255,255,.3)",
+                  color: "white",
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={i === 0 ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
+                </svg>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Wave bas */}
+      <svg className="absolute bottom-0 left-0 w-full pointer-events-none z-10" viewBox="0 0 1440 52" preserveAspectRatio="none">
+        <path d="M0,26 C360,52 720,0 1080,26 C1260,39 1380,20 1440,26 L1440,52 L0,52 Z" fill="#F5F5F5" />
+      </svg>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   PAGE PRINCIPALE
+───────────────────────────────────────────────────────────── */
+export default function EventDetailPage() {
+  const params = useParams();
+  const slug = params?.slug as string;
   const isCongres = slug === "9eme-congres";
 
-  const program = [
-    { day: "Jour 1 — 15 Mai", sessions: ["08h00 — Accueil et enregistrement", "09h00 — Cérémonie d'ouverture officielle", "10h00 — Conférence inaugurale : État de la pneumologie en Afrique", "14h00 — Symposium : Tuberculose résistante au Burkina Faso", "16h30 — Communications orales — Séance 1", "18h00 — Cocktail de bienvenue"] },
-    { day: "Jour 2 — 16 Mai", sessions: ["08h30 — Ateliers pratiques simultanés (spirométrie, endoscopie, imagerie)", "11h00 — Session plénière : Cancer du poumon en Afrique", "14h00 — Symposium : Asthme sévère et nouvelles thérapies", "16h00 — Présentation des posters", "17h30 — Assemblée Générale de la SOBUP"] },
-    { day: "Jour 3 — 17 Mai", sessions: ["09h00 — Communications orales — Séance 2", "11h00 — Symposium : BPCO et réhabilitation respiratoire", "14h00 — Remise des prix scientifiques", "15h00 — Clôture et perspectives 2027"] },
-  ];
+  if (!isCongres) {
+    return (
+      <section className="py-20 text-center">
+        <p className="text-gray-500">Événement non trouvé.</p>
+        <Link href="/evenements" className="mt-4 inline-block font-bold" style={{ color: "var(--primary)" }}>← Retour aux événements</Link>
+      </section>
+    );
+  }
 
   return (
     <>
-      <PageHero
-        title={isCongres ? "9ème Congrès annuel de la SOBUP" : "Détail de l'événement"}
-        subtitle={isCongres ? "Pneumologie en Afrique : défis et innovations — 15 au 17 Mai 2026, Ouagadougou" : ""}
-        breadcrumb={[{ label: "Accueil", href: "/" }, { label: "Événements", href: "/evenements" }, { label: isCongres ? "9ème Congrès" : slug }]}
-        tag={isCongres ? "Congrès annuel" : "Événement"}
-        shape="diagonal-left"
-      />
+      {/* ── HÉROS CAROUSEL ───────────────────────────────────── */}
+      <HeroCarousel />
 
-      <section className="py-12 bg-background">
-        <div className="mx-auto max-w-7xl px-4 grid lg:grid-cols-3 gap-8">
-
-          {/* Main */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Image */}
-            <div className="rounded-2xl overflow-hidden shadow-lg" style={{ aspectRatio: "16/7" }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=80&fit=crop" alt="Congrès SOBUP" className="w-full h-full object-cover"/>
+      {/* ── BANDE INFO RAPIDE (défilante) ─────────────────────── */}
+      <div className="overflow-hidden" style={{ background: "var(--primary)" }}>
+        <div className="flex w-max py-4" style={{ animation: "marquee-infos 18s linear infinite" }}>
+          {[0, 1, 2, 3].map((dup) => (
+            <div key={dup} className="flex items-center shrink-0" aria-hidden={dup !== 0}>
+              {[
+                { icon: "📅", text: "16 au 19 Décembre 2027" },
+                { icon: "📍", text: "Sopatel Silmande Hôtel, Ouagadougou" },
+                { icon: "🌐", text: "Présentiel" },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-2 px-10 text-white text-sm font-semibold whitespace-nowrap">
+                  <span>{item.icon}</span>
+                  <span style={{ color: "rgba(255,255,255,.9)" }}>{item.text}</span>
+                </div>
+              ))}
             </div>
+          ))}
+        </div>
+        <style>{`@keyframes marquee-infos { from { transform: translateX(0); } to { transform: translateX(-25%); } }`}</style>
+      </div>
 
-            {/* Programme */}
-            <div className="bg-background rounded-2xl border border-gray-100 p-6 card-shadow">
-              <h2 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">📅 Programme scientifique</h2>
-              <div className="space-y-6">
-                {program.map((day) => (
-                  <div key={day.day}>
-                    <h3 className="font-bold text-sm px-3 py-1.5 rounded-lg inline-block mb-3 text-white" style={{ background: "#31B9AE" }}>
-                      {day.day}
-                    </h3>
-                    <ul className="space-y-2 pl-2">
-                      {day.sessions.map((s, i) => (
-                        <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full mt-2 shrink-0" style={{ background: "#5BCEC4" }}/>
-                          {s}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Informations pratiques */}
-            <div className="bg-background rounded-2xl border border-gray-100 p-6 card-shadow">
-              <h2 className="text-xl font-black text-gray-900 mb-4">📍 Informations pratiques</h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {[
-                  { icon: "📅", label: "Dates", value: "15, 16 et 17 Mai 2026" },
-                  { icon: "📍", label: "Lieu", value: "Hôtel Laïco Ouaga 2000, Ouagadougou" },
-                  { icon: "🌐", label: "Format", value: "Présentiel + diffusion en ligne" },
-                  { icon: "📝", label: "Deadline abstracts", value: "30 Avril 2026" },
-                ].map((info) => (
-                  <div key={info.label} className="flex gap-3 p-4 rounded-xl" style={{ background: "#f0fafa" }}>
-                    <span className="text-xl">{info.icon}</span>
-                    <div>
-                      <p className="text-xs text-gray-400 font-medium">{info.label}</p>
-                      <p className="font-bold text-gray-900 text-sm">{info.value}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+      {/* ── HISTORIQUE — FRISE DES CONGRÈS ─────────────────────── */}
+      <section className="py-16 banniere-sobup">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="text-center mb-10">
+            <p className="text-sm font-bold uppercase tracking-widest mb-2" style={{ color: "#5BCEC4" }}>Notre parcours</p>
+            <h2 className="text-2xl md:text-3xl font-black text-white">Historique des congrès</h2>
+            <p className="mt-3 text-sm text-white/80 max-w-2xl mx-auto">
+              Huit congrès internationaux de pneumologie, de 2011 à 2025 — thèmes et lieux des rencontres scientifiques.
+            </p>
           </div>
-
-          {/* Sidebar — Inscription */}
-          <div className="space-y-5">
-            <div className="bg-background rounded-2xl border-2 p-6 card-shadow sticky top-24" style={{ borderColor: "#31B9AE" }}>
-              <h3 className="text-xl font-black text-gray-900 mb-1">Inscription</h3>
-              <p className="text-xs text-gray-400 mb-5">Paiement sécurisé en ligne</p>
-
-              <div className="space-y-3 mb-6">
-                {[
-                  { cat: "Membres SOBUP à jour", price: "30 000 XOF" },
-                  { cat: "Non-membres / Invités", price: "50 000 XOF" },
-                  { cat: "Étudiants / Résidents", price: "10 000 XOF" },
-                  { cat: "Partenaires institutionnels", price: "Sur devis" },
-                ].map((t) => (
-                  <div key={t.cat} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
-                    <span className="text-sm text-gray-700">{t.cat}</span>
-                    <span className="font-bold text-sm" style={{ color: "#31B9AE" }}>{t.price}</span>
+          <div className="bg-white rounded-2xl shadow-2xl p-5 md:p-8 overflow-x-auto">
+            <div className="flex items-stretch w-full">
+              {congressHistory.map((c, i) => {
+                const above = i % 2 === 1;
+                const label = (
+                  <div className="px-3">
+                    <p className="font-black text-sm" style={{ color: c.color }}>{c.ordinal} Congrès</p>
+                    <p className="text-xs text-gray-600 leading-snug mt-1">{c.theme} – {c.place}.</p>
                   </div>
-                ))}
-              </div>
-
-              {/* Modes de paiement */}
-              <p className="text-xs text-gray-400 mb-3 font-semibold uppercase tracking-wide">Modes de paiement</p>
-              <div className="flex gap-2 mb-5 flex-wrap">
-                {[
-                  { label: "Orange Money", color: "#FF6B00", emoji: "🟠" },
-                  { label: "Wave", color: "#1BA8E0", emoji: "🔵" },
-                  { label: "Carte bancaire", color: "#065E52", emoji: "💳" },
-                ].map((p) => (
-                  <span key={p.label} className="text-xs font-bold px-2.5 py-1.5 rounded-lg text-white flex items-center gap-1"
-                    style={{ background: p.color }}>
-                    {p.emoji} {p.label}
-                  </span>
-                ))}
-              </div>
-
-              <Link href="/espace-membre"
-                className="block w-full text-center py-3 rounded-xl font-black text-white text-sm transition-all hover:-translate-y-0.5 hover:shadow-lg mb-3"
-                style={{ background: "#e67e22" }}>
-                S&apos;inscrire maintenant
-              </Link>
-              <Link href="/abstracts"
-                className="block w-full text-center py-2.5 rounded-xl font-bold text-sm border-2 transition-colors"
-                style={{ color: "#31B9AE", borderColor: "#31B9AE" }}>
-                Soumettre un abstract
-              </Link>
-
-              <p className="text-xs text-gray-400 text-center mt-3">
-                🏅 Attestation de participation générée automatiquement
-              </p>
+                );
+                return (
+                  <div
+                    key={c.year}
+                    className="flex flex-1 min-w-[7rem] flex-col"
+                    style={{ marginLeft: i === 0 ? 0 : -14 }}
+                  >
+                    <div className="flex h-32 items-end pb-3">{above ? label : null}</div>
+                    <div
+                      className="flex h-11 items-center justify-center font-black text-white text-lg tracking-wide"
+                      style={{
+                        background: c.color,
+                        clipPath:
+                          i === 0
+                            ? "polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%)"
+                            : "polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%, 14px 50%)",
+                      }}
+                    >
+                      {c.year}
+                    </div>
+                    <div className="flex h-32 items-start pt-3">{!above ? label : null}</div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
+
     </>
   );
 }

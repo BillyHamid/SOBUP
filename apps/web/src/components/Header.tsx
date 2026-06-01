@@ -13,7 +13,6 @@ const navigation = [
       { name: "Présentation & historique", href: "/a-propos" },
       { name: "Vision, mission & valeurs", href: "/a-propos#vision" },
       { name: "Bureau & gouvernance", href: "/gouvernance" },
-      { name: "Statuts de la SOBUP", href: "/statuts" },
     ],
   },
   {
@@ -39,7 +38,8 @@ const navigation = [
     href: "/evenements",
     children: [
       { name: "Agenda scientifique", href: "/evenements" },
-      { name: "9ème Congrès SOBUP", href: "/evenements/9eme-congres" },
+      { name: "Congrès SOBUP", href: "/evenements/9eme-congres" },
+      { name: "1ère Journée Scientifique Régionale", href: "/evenements/journee-regionale" },
       { name: "Soumettre un abstract", href: "/abstracts" },
     ],
   },
@@ -47,19 +47,19 @@ const navigation = [
     name: "Formations",
     href: "/formations",
     children: [
-      { name: "E-learning", href: "/formations" },
-      { name: "Webinaires en direct", href: "/formations/webinaires" },
-      { name: "Replays de conférences", href: "/formations/replays" },
+      { name: "Échographie thoracique", href: "/formations/echographie-thoracique" },
+      { name: "Pleuroscopie médicale", href: "/formations/pleuroscopie-medicale" },
+      { name: "Rédaction scientifique", href: "/formations/redaction-scientifique" },
     ],
   },
   {
     name: "Publications",
     href: "/publications",
     children: [
-      { name: "Blog scientifique", href: "/blog" },
-      { name: "Recommandations", href: "/recommandations" },
-      { name: "Journal SOBUP", href: "/journal" },
-      { name: "Médiathèque", href: "/mediatheque" },
+      { name: "Blog SOBUP", href: "/blog" },
+      { name: "Publication Scientifique", href: "/publications-scientifiques" },
+      { name: "Newsletter SOBUP", href: "/journal" },
+      { name: "Mediatheque", href: "/mediatheque" },
     ],
   },
   {
@@ -67,9 +67,11 @@ const navigation = [
     href: "/annuaire",
     children: [
       { name: "Annuaire des pneumologues", href: "/annuaire" },
+      { name: "Liste des membres de la SOBUP", href: "/annuaire/membres" },
       { name: "Carte interactive", href: "/carte" },
     ],
   },
+  { name: "Nous contacter", href: "/contact", button: true },
 ];
 
 export default function Header() {
@@ -81,16 +83,16 @@ export default function Header() {
     <header className="sticky top-0 z-50 shadow-md">
       {/* ── Top bar ── */}
       <div className="banniere-sobup text-white">
-        <div className="mx-auto max-w-7xl px-4 py-1.5 flex items-center justify-between text-xs text-white/80">
-          <p className="hidden sm:block italic">
+        <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between text-sm text-white/80">
+          <p className="hidden sm:block italic font-semibold">
             « La santé respiratoire, un droit pour tout Burkinabè »
           </p>
           <div className="flex items-center gap-4 ml-auto">
-            <a href="mailto:contact@sobup.bf" className="hidden md:flex items-center gap-1 hover:text-white transition-colors">
+            <a href="mailto:sobup01@gmail.com" className="hidden md:flex items-center gap-1 hover:text-white transition-colors">
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
-              contact@sobup.bf
+              sobup01@gmail.com
             </a>
             <div className="w-px h-3 bg-white/20 hidden md:block"/>
             <Link href="/espace-membre" className="hover:text-white transition-colors font-medium">Connexion</Link>
@@ -106,36 +108,43 @@ export default function Header() {
       {/* ── Main nav ── */}
       <nav className="bg-background border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-4">
-          <div className="flex h-[70px] items-center gap-4">
+          <div className="flex h-[90px] items-center gap-1">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 shrink-0">
+            <Link href="/" className="flex items-center gap-2 shrink-0">
               <Image
                 src="/logo.png"
                 alt="Logo SOBUP"
-                width={56}
-                height={56}
-                className="h-14 w-14 object-contain"
+                width={160}
+                height={160}
+                className="h-40 w-40 object-contain"
                 priority
               />
               <div className="hidden sm:block">
-                <p className="font-black text-xl leading-none" style={{ color: "#31B9AE" }}>
+                <p className="font-black text-4xl leading-none" style={{ color: "#E91E63" }}>
                   SOBUP
                 </p>
-                <p className="text-[10px] text-gray-400 font-medium leading-tight mt-0.5">
+                <p className="text-xs text-gray-400 font-semibold leading-tight mt-1">
                   Société Burkinabè de Pneumologie
                 </p>
               </div>
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden lg:flex items-center gap-0.5 ml-2 flex-1">
+            <div className="hidden lg:flex items-center gap-0 ml-2 flex-1">
               {navigation.map((item) => (
                 <div key={item.name} className="relative"
                   onMouseEnter={() => item.children && setOpenSub(item.name)}
                   onMouseLeave={() => setOpenSub(null)}>
+                  {item.button ? (
+                    <Link href={item.href}
+                      className="flex items-center px-3 py-1.5 text-base font-bold text-white rounded-lg transition-all whitespace-nowrap hover:opacity-90 hover:-translate-y-0.5 ml-1"
+                      style={{ background: "#e67e22" }}>
+                      {item.name}
+                    </Link>
+                  ) : (
                   <Link href={item.href}
-                    className="flex items-center gap-0.5 px-3 py-2 text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
+                    className="flex items-center gap-0.5 px-2.5 py-2 text-base font-bold rounded-lg transition-colors whitespace-nowrap"
                     style={{ color: openSub === item.name ? "#31B9AE" : "#334155" }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#31B9AE"; (e.currentTarget as HTMLAnchorElement).style.background = "#E8F9F7"; }}
                     onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = openSub === item.name ? "#31B9AE" : "#334155"; (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
@@ -146,11 +155,12 @@ export default function Header() {
                       </svg>
                     )}
                   </Link>
+                  )}
                   {item.children && openSub === item.name && (
-                    <div className="absolute left-0 top-full w-64 bg-background rounded-xl shadow-xl border border-gray-100 py-2 z-50">
+                    <div className="absolute left-0 top-full w-72 bg-background rounded-xl shadow-xl border border-gray-100 py-2 z-50">
                       {item.children.map((child) => (
                         <Link key={child.name} href={child.href}
-                          className="block px-4 py-2.5 text-sm font-medium transition-colors"
+                          className="block px-4 py-3 text-sm font-semibold transition-colors"
                           style={{ color: "#475569" }}
                           onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#E8F9F7"; (e.currentTarget as HTMLAnchorElement).style.color = "#31B9AE"; }}
                           onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; (e.currentTarget as HTMLAnchorElement).style.color = "#475569"; }}
@@ -180,11 +190,11 @@ export default function Header() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="lg:hidden border-t py-3 px-4" style={{ background: "#f0fafa" }}>
+          <div className="lg:hidden border-t py-4 px-4" style={{ background: "#f0fafa" }}>
             {navigation.map((item) => (
               <div key={item.name}>
                 <button
-                  className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-lg transition-colors"
+                  className="w-full flex items-center justify-between px-3 py-3 text-base font-bold rounded-lg transition-colors"
                   style={{ color: "#334155" }}
                   onClick={() => {
                     if (item.children) setMobileSub(mobileSub === item.name ? null : item.name);
@@ -195,7 +205,10 @@ export default function Header() {
                       <svg className={`w-4 h-4 transition-transform ${mobileSub === item.name ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
                       </svg></>
-                    : <Link href={item.href} className="w-full text-left" onClick={() => setMobileOpen(false)}>{item.name}</Link>
+                    : <Link href={item.href}
+                        className={`w-full text-left${item.button ? " font-bold text-white px-3 py-1 rounded" : ""}`}
+                        style={item.button ? { color: "#fff", background: "#e67e22" } : {}}
+                        onClick={() => setMobileOpen(false)}>{item.name}</Link>
                   }
                 </button>
                 {item.children && mobileSub === item.name && (

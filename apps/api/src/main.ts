@@ -9,10 +9,8 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.setGlobalPrefix('api');
-
   const port = process.env.PORT || 4000;
   await app.listen(port);
-  console.log(`🚀 SOBUP API running on http://localhost:${port}/api`);
+  console.log(`🚀 SOBUP API running on http://localhost:${port}`);
 }
 bootstrap();
