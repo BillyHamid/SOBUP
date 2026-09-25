@@ -2,10 +2,40 @@ import Link from "next/link";
 import Image from "next/image";
 import HeroCarousel from "@/components/HeroCarousel";
 import Newsletter from "@/components/Newsletter";
+import { createPublicClient } from "@/lib/supabase/server";
+
+export const dynamic = "force-dynamic";
+
+const MONTHS_SHORT = ["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"];
+
+function parseDisplayDate(displayDate: string, isoDate: string) {
+  // Tente d'extraire jour + mois + année depuis "19 – 21 Novembre 2026" ou "31 Juillet 2026"
+  const dayMatch = displayDate.match(/^(\d+(?:\s*[-–]\s*\d+)?)/);
+  const yearMatch = displayDate.match(/(\d{4})/);
+  if (dayMatch && yearMatch) {
+    const monthIdx = new Date(isoDate).getMonth();
+    return {
+      date: dayMatch[1].replace(/\s/g, ""),
+      month: MONTHS_SHORT[monthIdx],
+      year: yearMatch[1],
+    };
+  }
+  const d = new Date(isoDate);
+  return { date: String(d.getDate()), month: MONTHS_SHORT[d.getMonth()], year: String(d.getFullYear()) };
+}
+
+function badgeClassFor(label: string, type: string): string {
+  if (type === "Appel à candidatures") return "bg-accent text-white";
+  if (label === "Inscriptions ouvertes") return "bg-accent text-white";
+  if (type === "Congrès") return "bg-accent text-white";
+  if (type === "Journée") return "bg-secondary text-white";
+  if (type === "EPU") return "bg-green-600 text-white";
+  return "bg-blue-600 text-white";
+}
 
 /* ─── Mock data ─── */
 
-const upcomingEvents = [
+const _legacyUpcomingEvents = [
   {
     date: "24",
     month: "Juil",
@@ -94,7 +124,36 @@ const latestNews = [
 
 /* ─── Page ─── */
 
-export default function Home() {
+export default async function Home() {
+  void _legacyUpcomingEvents;
+  const supabase = createPublicClient();
+  const todayIso = new Date().toISOString().slice(0, 10);
+  const { data: dbEvents } = await supabase
+    .from("events")
+    .select("id, slug, type, event_date, display_date, time_range, location, title, gtt, image_url, badge_label, has_page, attachment_url, attachment_name")
+    .eq("published", true)
+    .gte("event_date", todayIso)
+    .order("event_date", { ascending: true })
+    .limit(4);
+
+  const upcomingEvents = (dbEvents ?? []).map((ev) => {
+    const parts = parseDisplayDate(ev.display_date, ev.event_date);
+    return {
+      date: parts.date,
+      month: parts.month,
+      year: parts.year,
+      title: ev.title,
+      location: ev.location,
+      time: ev.time_range,
+      type: ev.type,
+      badge: badgeClassFor(ev.badge_label, ev.type),
+      href: ev.has_page ? `/evenements/${ev.slug}` : "/evenements",
+      image: ev.image_url,
+      gtt: ev.gtt,
+      hasAttachment: !!ev.attachment_url,
+    };
+  });
+
   return (
     <>
       {/* ══════════════════════════════════════
@@ -180,18 +239,31 @@ export default function Home() {
                 className="group bg-background rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 card-shadow">
                 {/* Image or color banner */}
                 {ev.image ? (
-                  <div className="relative h-64 sm:h-72 overflow-hidden">
+                  <div className="relative h-64 sm:h-72 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
                     <Image
                       src={ev.image}
                       alt={ev.title}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="object-contain group-hover:scale-[1.03] transition-transform duration-500"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"/>
+                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"/>
                     {ev.type && (
                       <span className={`absolute top-3 left-3 ${ev.badge} text-xs font-bold px-3 py-1 rounded-full shadow`}>
                         {ev.type}
+                      </span>
+                    )}
+                    {ev.hasAttachment && (
+                      <span
+                        className="absolute top-3 right-3 inline-flex items-center gap-1 text-[11px] font-black px-2.5 py-1 rounded-full shadow-sm"
+                        style={{ background: "#fffbeb", color: "#92400e", border: "1px solid #fde68a" }}
+                        title="Un document est joint à cet événement"
+                      >
+                        <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round"
+                            d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
+                        </svg>
+                        Document
                       </span>
                     )}
                     <div className="absolute bottom-3 left-4 flex items-baseline gap-1.5 text-white">
@@ -205,9 +277,20 @@ export default function Home() {
                       <p className="text-4xl font-bold text-white leading-none">{ev.date}</p>
                       <p className="text-blue-200 text-sm font-medium">{ev.month} {ev.year}</p>
                     </div>
-                    <span className={`${ev.badge} text-xs font-bold px-3 py-1 rounded-full ml-auto`}>
-                      {ev.type}
-                    </span>
+                    <div className="ml-auto flex items-center gap-1.5">
+                      {ev.hasAttachment && (
+                        <span className="inline-flex items-center text-xs font-bold px-2 py-1 rounded-full"
+                          style={{ background: "#fffbeb", color: "#92400e" }} title="Document joint">
+                          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round"
+                              d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
+                          </svg>
+                        </span>
+                      )}
+                      <span className={`${ev.badge} text-xs font-bold px-3 py-1 rounded-full`}>
+                        {ev.type}
+                      </span>
+                    </div>
                   </div>
                 )}
                 <div className="p-5">
@@ -236,6 +319,16 @@ export default function Home() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                       {(ev as { gtt: string }).gtt}
+                    </p>
+                  )}
+                  {ev.hasAttachment && (
+                    <p className="flex items-center gap-1.5 text-xs font-bold mt-3 pt-3 border-t border-gray-100"
+                      style={{ color: "#d97706" }}>
+                      <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round"
+                          d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
+                      </svg>
+                      Document à télécharger
                     </p>
                   )}
                 </div>

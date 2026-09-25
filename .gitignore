@@ -28,5 +28,3 @@ Thumbs.db
 
 # Claude
 .claude/settings.local.json
-
-public/mediatheque/*.mp4
