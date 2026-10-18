@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight, Check, Clock, GraduationCap, Laptop, FileCheck2 } from "lucide-react";
-import { RESPIRE_MODULES } from "@/lib/formations";
+import { RESPIRE_DATES, RESPIRE_MODULES, RESPIRE_PEDAGOGICAL_DIRECTOR } from "@/lib/formations";
 import ApplicationForm from "../ApplicationForm";
+
+/** Date limite de paiement des frais de formation, affichée dans le tableau des tarifs. */
+const PAYMENT_DEADLINE = "05/12/2026";
 
 export const metadata: Metadata = {
   title: "RESPIRE-BF — Formation en recherche",
@@ -33,11 +36,15 @@ export default function RespireFormationPage() {
               <p className="text-2xl font-bold">Votre projet au cœur<br />de la formation.</p>
               <p className="mt-4 leading-relaxed text-white/70">Un, deux ou trois modules : construisez votre parcours et travaillez sur votre propre sujet, accompagné par les formateurs.</p>
               <div className="mt-8 grid grid-cols-3 gap-3 border-t border-white/15 pt-6">
-                {[["3", "modules"], ["99 h", "au total"], ["80 %", "de pratique"]].map(([value, label]) => <div key={label}><p className="text-2xl font-black text-[#7eeae4]">{value}</p><p className="mt-1 text-xs text-white/65">{label}</p></div>)}
+                {[["3", "modules"], [`${RESPIRE_MODULES.reduce((total, module) => total + module.hours, 0)} h`, "au total"], ["80 %", "de pratique"]].map(([value, label]) => <div key={label}><p className="text-2xl font-black text-[#7eeae4]">{value}</p><p className="mt-1 text-xs text-white/65">{label}</p></div>)}
               </div>
             </div>
           </div>
-          <p className="mt-12 max-w-3xl border-t border-white/15 pt-6 text-sm leading-relaxed text-white/65">Une formation portée par la Société Burkinabè de Pneumologie (SOBUP) et le Département de Santé Publique de l’Université Joseph KI-ZERBO.</p>
+          <div className="mt-12 max-w-3xl border-t border-white/15 pt-6 text-sm leading-relaxed">
+            <p className="font-semibold text-white">Directeur pédagogique : {RESPIRE_PEDAGOGICAL_DIRECTOR.name}</p>
+            <p className="mt-1 text-white/75">{RESPIRE_PEDAGOGICAL_DIRECTOR.role}</p>
+            <p className="mt-4 text-white/65">Une formation portée par la Société Burkinabè de Pneumologie (SOBUP) et le Département de Santé Publique de l’Université Joseph KI-ZERBO.</p>
+          </div>
         </div>
       </section>
       <div className="mx-auto max-w-7xl space-y-16 px-5 py-14 sm:px-8 sm:py-20">
@@ -58,15 +65,15 @@ export default function RespireFormationPage() {
           </div>
         </section>
         <section className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-2xl bg-[#e8f3ef] p-7"><Laptop className="h-7 w-7 text-[#08796c]" /><h2 className="mt-4 text-xl font-bold text-[#0b3d38]">En ligne, puis ensemble en atelier</h2><p className="mt-3 leading-relaxed text-slate-600">Vidéos courtes, lectures, exercices et échanges en ligne préparent deux journées intensives en présentiel par module. Relecture entre pairs, mentorat et usage critique de l’IA accompagnent votre travail.</p><p className="mt-4 text-sm font-semibold text-[#065e52]">Dates et lieu des ateliers : à venir.</p></div>
+          <div className="rounded-2xl bg-[#e8f3ef] p-7"><Laptop className="h-7 w-7 text-[#08796c]" /><h2 className="mt-4 text-xl font-bold text-[#0b3d38]">En ligne, puis ensemble en atelier</h2><p className="mt-3 leading-relaxed text-slate-600">Vidéos courtes, lectures, exercices et échanges en ligne préparent deux journées intensives en présentiel par module. Relecture entre pairs, mentorat et usage critique de l’IA accompagnent votre travail.</p><p className="mt-4 text-sm font-semibold text-[#065e52]">En ligne : du {RESPIRE_DATES.online}.<br />Présentiel : du {RESPIRE_DATES.inPerson}.<br />Lieu des ateliers : à préciser.</p></div>
           <div className="rounded-2xl border border-slate-200 bg-white p-7"><FileCheck2 className="h-7 w-7 text-[#08796c]" /><h2 className="mt-4 text-xl font-bold text-[#0b3d38]">Un certificat pour chaque module validé</h2><p className="mt-3 leading-relaxed text-slate-600">La validation repose sur les exercices, la participation, les relectures et le livrable final. Une présence d’au moins 80 % et une note supérieure à 12/20 au livrable final sont requises.</p><p className="mt-4 text-sm text-slate-600">Le certificat RESPIRE-BF complet est délivré après validation des trois modules et de leurs trois livrables.</p></div>
         </section>
         <section><p className="text-xs font-bold uppercase tracking-widest text-[#08796c]">Frais de formation</p><h2 className="mt-3 text-3xl font-black text-[#0b3d38]">Choisissez la formule qui vous convient.</h2>
-          <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white"><table className="w-full text-left text-sm"><caption className="sr-only">Tarifs RESPIRE-BF par personne en francs CFA</caption><thead className="bg-[#0b3d38] text-white"><tr><th scope="col" className="p-4 sm:p-5">Catégorie</th><th scope="col" className="p-4 sm:p-5">Par module</th><th scope="col" className="p-4 sm:p-5">Les 3 modules</th></tr></thead><tbody>{[["Membres SOBUP à jour de cotisation", "50 000", "130 000"], ["Non membres SOBUP", "75 000", "200 000"], ["Inscriptions institutionnelles", "100 000", "270 000"]].map(row => <tr key={row[0]} className="border-t border-slate-100"><th scope="row" className="p-4 font-medium sm:p-5">{row[0]}</th><td className="whitespace-nowrap p-4 sm:p-5">{row[1]} FCFA</td><td className="whitespace-nowrap p-4 font-bold text-[#065e52] sm:p-5">{row[2]} FCFA</td></tr>)}</tbody></table></div>
-          <p className="mt-3 text-sm text-slate-500">Tarifs par personne. Le dépôt de candidature ne constitue ni un paiement ni une confirmation d’admission.</p>
+          <div className="mt-7 overflow-x-auto rounded-2xl border border-slate-200 bg-white"><table className="w-full text-left text-sm"><caption className="sr-only">Tarifs RESPIRE-BF par personne en francs CFA</caption><thead className="bg-[#0b3d38] text-white"><tr><th scope="col" className="p-4 sm:p-5">Catégorie</th><th scope="col" className="p-4 sm:p-5">Par module</th><th scope="col" className="p-4 sm:p-5">Les 3 modules</th><th scope="col" className="p-4 sm:p-5">Date limite</th></tr></thead><tbody>{[["Membres SOBUP à jour de cotisation", "50 000", "130 000"], ["Non membres SOBUP", "75 000", "200 000"], ["Inscriptions institutionnelles", "100 000", "270 000"]].map(row => <tr key={row[0]} className="border-t border-slate-100"><th scope="row" className="p-4 font-medium sm:p-5">{row[0]}</th><td className="whitespace-nowrap p-4 sm:p-5">{row[1]} FCFA</td><td className="whitespace-nowrap p-4 font-bold text-[#065e52] sm:p-5">{row[2]} FCFA</td><td className="whitespace-nowrap p-4 font-semibold text-[#b45309] sm:p-5">{PAYMENT_DEADLINE}</td></tr>)}</tbody></table></div>
+          <p className="mt-3 text-sm text-slate-500">Tarifs par personne. Inscription et paiement au plus tard le <strong className="font-semibold text-slate-700">5 décembre 2026</strong>. Le dépôt de candidature ne constitue ni un paiement ni une confirmation d’admission.</p>
         </section>
         <section id="candidature" className="grid scroll-mt-24 gap-8 lg:grid-cols-[0.8fr_1.2fr]">
-          <div><p className="text-xs font-bold uppercase tracking-widest text-[#08796c]">Candidature en ligne</p><h2 className="mt-3 text-3xl font-black text-[#0b3d38]">Votre prochain projet<br />commence ici.</h2><p className="mt-5 max-w-md leading-relaxed text-slate-600">Indiquez vos coordonnées, choisissez vos modules et joignez votre CV. Vous pouvez également ajouter une lettre de motivation.</p><p className="mt-4 max-w-md text-sm leading-relaxed text-slate-500">Aucun compte n’est nécessaire. Vos coordonnées et documents sont réservés à l’équipe chargée des candidatures RESPIRE-BF.</p></div>
+          <div><p className="text-xs font-bold uppercase tracking-widest text-[#08796c]">Candidature en ligne</p><h2 className="mt-3 text-3xl font-black text-[#0b3d38]">Votre prochain projet<br />commence ici.</h2><p className="mt-5 max-w-md leading-relaxed text-slate-600">Indiquez vos coordonnées, choisissez un ou plusieurs modules et joignez votre CV.</p><p className="mt-4 max-w-md text-sm leading-relaxed text-slate-500">Aucun compte n’est nécessaire. Vos coordonnées et documents sont réservés à l’équipe chargée des candidatures RESPIRE-BF.</p></div>
           <ApplicationForm />
         </section>
       </div>
