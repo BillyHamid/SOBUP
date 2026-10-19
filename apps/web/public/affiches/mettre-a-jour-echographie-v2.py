@@ -35,6 +35,10 @@ svg = svg.replace('font-size="26" fill="#355652">5 participants', 'font-size="29
 svg = svg.replace('font-size="25" fill="#b9e7dc">Autres participants', 'font-size="29" fill="#b9e7dc">Autres participants')
 svg = svg.replace('font-size="28" font-weight="800" fill="#fff">Membres', 'font-size="32" font-weight="800" fill="#fff">Membres')
 svg = svg.replace('font-size="25" font-weight="800" fill="#fff">CANDIDATURE', 'font-size="27" font-weight="800" fill="#fff">CANDIDATURE')
+svg = svg.replace('x="72" y="48" width="207" height="130"', 'x="72" y="35" width="250" height="158"')
+svg = svg.replace('x="88" y="58" width="175" height="110"', 'x="82" y="42" width="230" height="145"')
+svg = svg.replace('x="303" y="107"', 'x="347" y="107"')
+svg = svg.replace('x="306" y="143"', 'x="350" y="143"')
 
 extra = f'''  {MARKER}
   <rect x="72" y="1215" width="1456" height="76" rx="18" fill="#e67e22"/>
